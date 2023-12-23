@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vente_en_ligne.Data;
 
@@ -11,9 +12,11 @@ using vente_en_ligne.Data;
 namespace venteenligne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231223001800_lkwa")]
+    partial class lkwa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,6 @@ namespace venteenligne.Migrations
                     b.HasKey("CategorieID");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("vente_en_ligne.Models.Panier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IDPro")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IDU")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantité")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Paniers");
                 });
 
             modelBuilder.Entity("vente_en_ligne.Models.Produit", b =>
@@ -172,7 +150,7 @@ namespace venteenligne.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -187,9 +165,6 @@ namespace venteenligne.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Utilisateurs");
                 });

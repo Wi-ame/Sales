@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace vente_en_ligne.Models
 {
     public class Utilisateur
     {
+        
 
         [Key]
+        [Required]
         public int ID { get; set; }
 
         [Required]
@@ -16,6 +19,7 @@ namespace vente_en_ligne.Models
 
         [Required]
         [EmailAddress(ErrorMessage = "Veuillez saisir une adresse e-mail valide.")]
+      
         public string Email { get; set; }
 
         [Required]

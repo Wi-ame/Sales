@@ -48,11 +48,32 @@ namespace vente_en_ligne.Controllers
         {
             return View();
         }
-
-        // POST: Utilisateurs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public IActionResult Authent()
+        {
+            return View();
+        }
         [HttpPost]
+        public IActionResult Authent(string email)
+        {
+            // Vérifier si l'e-mail existe dans la table Utilisateurs
+            var utilisateur = _context.Utilisateurs.SingleOrDefault(u => u.Email == email);
+
+            if (utilisateur != null)
+            {
+                // L'e-mail existe, rediriger vers la vue Index du contrôleur Panier
+                return RedirectToAction("Index", "Paniers");
+            }
+            else
+            {
+                // L'e-mail n'existe pas, afficher un message d'erreur
+                ViewData["ErrorMessage"] = "L'e-mail n'existe pas.";
+                return View();
+            }
+        }
+            // POST: Utilisateurs/Create
+            // To protect from overposting attacks, enable the specific properties you want to bind to.
+            // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID", "Nom, Prenom, Email, Tel")] Utilisateur utilisateur)
         {
@@ -67,7 +88,7 @@ namespace vente_en_ligne.Controllers
                     int userId = utilisateur.ID;
        
                     // Rediriger vers l'action CreatePanierPrinc du contrôleur PanierPrincs
-                    return RedirectToAction("Create", "PanierPrincs", new { userId = userId });
+                    return RedirectToAction("Index", "Panier");
 
                 }
                 catch (Exception ex)

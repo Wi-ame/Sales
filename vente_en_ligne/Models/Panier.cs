@@ -7,21 +7,16 @@ namespace vente_en_ligne.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("PanierPrinc")]
+        [ForeignKey("Utilisateur")]
         [Required]
-        public int IDPa { get; set; }  
-        public PanierPrinc PanierPrinc { get; set; }
+        public int IDU { get; set; }
 
         [ForeignKey("Produit")]
         [Required]
-         public int IDPro {  get; set; }
-        [Required]
-         public Produit produit { get; set; }
+        public int IDPro { get; set; }
         [Required]
         public int Quantité { get; set; }
         [Required]
-        public double Total { get; set; }  
-       
-
+        public double Total { get; set; }
     }
 }

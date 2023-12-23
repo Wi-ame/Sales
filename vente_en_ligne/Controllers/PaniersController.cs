@@ -22,21 +22,20 @@ namespace vente_en_ligne.Controllers
         // GET: Paniers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Panier.Include(p => p.PanierPrinc).Include(p => p.produit);
-            return View(await applicationDbContext.ToListAsync());
+              return _context.Paniers != null ? 
+                          View(await _context.Paniers.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Paniers'  is null.");
         }
 
         // GET: Paniers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Panier == null)
+            if (id == null || _context.Paniers == null)
             {
                 return NotFound();
             }
 
-            var panier = await _context.Panier
-                .Include(p => p.PanierPrinc)
-                .Include(p => p.produit)
+            var panier = await _context.Paniers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (panier == null)
             {
@@ -49,8 +48,6 @@ namespace vente_en_ligne.Controllers
         // GET: Paniers/Create
         public IActionResult Create()
         {
-            ViewData["IDPa"] = new SelectList(_context.PanierPrincs, "PID", "PID");
-            ViewData["IDPro"] = new SelectList(_context.Produits, "IdPr", "Description");
             return View();
         }
 
@@ -59,7 +56,7 @@ namespace vente_en_ligne.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IDPa,IDPro,Quantité,Total")] Panier panier)
+        public async Task<IActionResult> Create([Bind("Id,IDU,IDPro,Quantité,Total")] Panier panier)
         {
             if (ModelState.IsValid)
             {
@@ -67,26 +64,22 @@ namespace vente_en_ligne.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDPa"] = new SelectList(_context.PanierPrincs, "PID", "PID", panier.IDPa);
-            ViewData["IDPro"] = new SelectList(_context.Produits, "IdPr", "Description", panier.IDPro);
             return View(panier);
         }
 
         // GET: Paniers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Panier == null)
+            if (id == null || _context.Paniers == null)
             {
                 return NotFound();
             }
 
-            var panier = await _context.Panier.FindAsync(id);
+            var panier = await _context.Paniers.FindAsync(id);
             if (panier == null)
             {
                 return NotFound();
             }
-            ViewData["IDPa"] = new SelectList(_context.PanierPrincs, "PID", "PID", panier.IDPa);
-            ViewData["IDPro"] = new SelectList(_context.Produits, "IdPr", "Description", panier.IDPro);
             return View(panier);
         }
 
@@ -95,7 +88,7 @@ namespace vente_en_ligne.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IDPa,IDPro,Quantité,Total")] Panier panier)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IDU,IDPro,Quantité,Total")] Panier panier)
         {
             if (id != panier.Id)
             {
@@ -122,22 +115,18 @@ namespace vente_en_ligne.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDPa"] = new SelectList(_context.PanierPrincs, "PID", "PID", panier.IDPa);
-            ViewData["IDPro"] = new SelectList(_context.Produits, "IdPr", "Description", panier.IDPro);
             return View(panier);
         }
 
         // GET: Paniers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Panier == null)
+            if (id == null || _context.Paniers == null)
             {
                 return NotFound();
             }
 
-            var panier = await _context.Panier
-                .Include(p => p.PanierPrinc)
-                .Include(p => p.produit)
+            var panier = await _context.Paniers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (panier == null)
             {
@@ -152,14 +141,14 @@ namespace vente_en_ligne.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Panier == null)
+            if (_context.Paniers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Panier'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Paniers'  is null.");
             }
-            var panier = await _context.Panier.FindAsync(id);
+            var panier = await _context.Paniers.FindAsync(id);
             if (panier != null)
             {
-                _context.Panier.Remove(panier);
+                _context.Paniers.Remove(panier);
             }
             
             await _context.SaveChangesAsync();
@@ -168,7 +157,7 @@ namespace vente_en_ligne.Controllers
 
         private bool PanierExists(int id)
         {
-          return (_context.Panier?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Paniers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

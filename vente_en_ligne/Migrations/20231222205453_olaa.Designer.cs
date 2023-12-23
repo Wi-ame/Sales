@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vente_en_ligne.Data;
 
@@ -11,9 +12,11 @@ using vente_en_ligne.Data;
 namespace venteenligne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231222205453_olaa")]
+    partial class olaa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,10 +64,10 @@ namespace venteenligne.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IDPro")
+                    b.Property<int>("IDPa")
                         .HasColumnType("int");
 
-                    b.Property<int>("IDU")
+                    b.Property<int>("IDPro")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantité")
@@ -75,7 +78,32 @@ namespace venteenligne.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Paniers");
+                    b.HasIndex("IDPa");
+
+                    b.HasIndex("IDPro");
+
+                    b.ToTable("Panier");
+                });
+
+            modelBuilder.Entity("vente_en_ligne.Models.PanierPrinc", b =>
+                {
+                    b.Property<int>("PID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PID"));
+
+                    b.Property<DateTime>("DateCréation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IDU")
+                        .HasColumnType("int");
+
+                    b.HasKey("PID");
+
+                    b.HasIndex("IDU");
+
+                    b.ToTable("PanierPrincs");
                 });
 
             modelBuilder.Entity("vente_en_ligne.Models.Produit", b =>
@@ -172,7 +200,7 @@ namespace venteenligne.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -188,10 +216,31 @@ namespace venteenligne.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.ToTable("Utilisateurs");
+                });
+
+            modelBuilder.Entity("vente_en_ligne.Models.Panier", b =>
+                {
+                    b.HasOne("vente_en_ligne.Models.PanierPrinc", "PanierPrinc")
+                        .WithMany()
+                        .HasForeignKey("IDPa");
+
+                    b.HasOne("vente_en_ligne.Models.Produit", "produit")
+                        .WithMany()
+                        .HasForeignKey("IDPro");
+
+                    b.Navigation("PanierPrinc");
+
+                    b.Navigation("produit");
+                });
+
+            modelBuilder.Entity("vente_en_ligne.Models.PanierPrinc", b =>
+                {
+                    b.HasOne("vente_en_ligne.Models.Utilisateur", "Utilisateur")
+                        .WithMany()
+                        .HasForeignKey("IDU");
+
+                    b.Navigation("Utilisateur");
                 });
 
             modelBuilder.Entity("vente_en_ligne.Models.Produit", b =>

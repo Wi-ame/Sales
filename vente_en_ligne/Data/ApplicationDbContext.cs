@@ -13,8 +13,8 @@ namespace vente_en_ligne.Data
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Produit> Produits { get; set; }
-        public DbSet<PanierPrinc> PanierPrincs { get; set; }
-        public DbSet<Panier> Panier { get; set; }
+       
+        public DbSet<Panier> Paniers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,11 +24,11 @@ namespace vente_en_ligne.Data
 
             modelBuilder.Entity<Proprietaire>().HasKey(u => u.INterID);
 
-            modelBuilder.Entity<PanierPrinc>().HasKey(p => p.PID);
-
             modelBuilder.Entity<Categories>().HasKey(c => c.CategorieID);
-
-            modelBuilder.Entity<Panier>().HasKey(pa => pa.Id);
+            modelBuilder.Entity<Panier>().HasKey(c => c.Id);
+            modelBuilder.Entity<Utilisateur>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
 
             modelBuilder.Entity<Produit>()
@@ -42,26 +42,6 @@ namespace vente_en_ligne.Data
                 .WithMany()
                 .HasForeignKey(pr => pr.IDP)  // Utiliser la clé de la classe dérivée comme clé étrangère
                 .IsRequired(false);
-
-            modelBuilder.Entity<PanierPrinc>()
-               .HasOne(pn => pn.Utilisateur)
-               .WithMany()
-               .HasForeignKey(pn => pn.IDU)  // Utiliser la clé de la classe dérivée comme clé étrangère
-               .IsRequired(false);
-
-            modelBuilder.Entity<Panier>()
-              .HasOne(pa => pa.PanierPrinc)
-              .WithMany()
-              .HasForeignKey(pn => pn.IDPa)  // Utiliser la clé de la classe dérivée comme clé étrangère
-              .IsRequired(false);
-
-            modelBuilder.Entity<Panier>()
-              .HasOne(pa => pa.produit)
-              .WithMany()
-              .HasForeignKey(pn => pn.IDPro)  // Utiliser la clé de la classe dérivée comme clé étrangère
-              .IsRequired(false);
-
-
 
             base.OnModelCreating(modelBuilder);
         }
