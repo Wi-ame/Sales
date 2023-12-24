@@ -78,13 +78,16 @@ namespace vente_en_ligne.Controllers
                 .Include(p => p.Categories)
                 .Include(p => p.proprietaires)
                 .FirstOrDefaultAsync(m => m.IdPr == id);
+
             if (produit == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(produit); // Renvoie la vue Details avec le modèle produit
         }
+
+
         public async Task<IActionResult> CreateProduct()
 
         {

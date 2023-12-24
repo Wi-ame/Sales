@@ -7,9 +7,6 @@ namespace vente_en_ligne.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Utilisateur")]
-        [Required]
-        public int IDU { get; set; }
 
         [ForeignKey("Produit")]
         [Required]
@@ -18,5 +15,6 @@ namespace vente_en_ligne.Models
         public int Quantité { get; set; }
         [Required]
         public double Total { get; set; }
+       
     }
 }

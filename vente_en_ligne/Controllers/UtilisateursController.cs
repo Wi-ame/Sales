@@ -66,7 +66,7 @@ namespace vente_en_ligne.Controllers
             else
             {
                 // L'e-mail n'existe pas, afficher un message d'erreur
-                ViewData["ErrorMessage"] = "L'e-mail n'existe pas.";
+                ViewData["ErrorMessage"] = "This Email doesn't exist.";
                 return View();
             }
         }
@@ -88,7 +88,7 @@ namespace vente_en_ligne.Controllers
                     int userId = utilisateur.ID;
        
                     // Rediriger vers l'action CreatePanierPrinc du contrôleur PanierPrincs
-                    return RedirectToAction("Index", "Panier");
+                    return RedirectToAction("Index", "Paniers");
 
                 }
                 catch (Exception ex)

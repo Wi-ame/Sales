@@ -15,6 +15,7 @@ namespace vente_en_ligne.Data
         public DbSet<Produit> Produits { get; set; }
        
         public DbSet<Panier> Paniers { get; set; }
+        public DbSet<PanierPrinc> PanierPrincs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace vente_en_ligne.Data
             modelBuilder.Entity<Admin>().HasKey(u => u.CIN);
 
             modelBuilder.Entity<Proprietaire>().HasKey(u => u.INterID);
+            modelBuilder.Entity<PanierPrinc>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Categories>().HasKey(c => c.CategorieID);
             modelBuilder.Entity<Panier>().HasKey(c => c.Id);
@@ -42,7 +44,7 @@ namespace vente_en_ligne.Data
                 .WithMany()
                 .HasForeignKey(pr => pr.IDP)  // Utiliser la clé de la classe dérivée comme clé étrangère
                 .IsRequired(false);
-
+          
             base.OnModelCreating(modelBuilder);
         }
   

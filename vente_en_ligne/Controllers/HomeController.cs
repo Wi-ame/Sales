@@ -18,8 +18,10 @@ namespace vente_en_ligne.Controllers
         public IActionResult Index()
         {
             var produits = _context.Produits
-                .Select(p => new Produit
+                .Select(p => new Produit()
                 {
+                    Categories=p.Categories,
+                    IdPr=p.IdPr,
                     Name = p.Name,
                     ImageData = p.ImageData,
                     prix = p.prix

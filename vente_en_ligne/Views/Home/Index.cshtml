@@ -116,9 +116,9 @@
                     <li><a href="" data-category-id="1">Smartphones</a></li>
                     <li><a href="" data-category-id="2">Laptops</a></li>
                     <li><a href="" data-category-id="3">TVS</a></li>
-                    <li><a href="" data-category-id="4">Meubles</a></li>
-                    <li><a href="" data-category-id="5">Electromenager</a></li>
-                    <li><a href="" data-category-id="6">Accesoires</a></li>
+                    <li><a href="" data-category-id="4">Furniture</a></li>
+                    <li><a href="" data-category-id="5">Home appliances</a></li>
+                    <li><a href="" data-category-id="6">"Accessories</a></li>
 
                     <!-- Ajoutez les autres catégories avec des data-category-id uniques -->
                 </ul>
@@ -207,21 +207,47 @@
         @foreach (var produit in Model)
         {
             <div class="col-md-4">
-                <div class="card mb-4 box-shadow mx-auto">
-                    <!-- Ajoutez la classe mx-auto ici -->
-                    <img class="card-img-top"
+                <div class="product">
+                    <div class="product-img">
+                    <img 
                          src="data:image/jpeg;base64,@Convert.ToBase64String(produit.ImageData)"
                          alt="Produit Image"
-                         style="width: 90%; height: 350px; object-fit: cover;">
-                    <div class="card-body">
-                        <h4>@produit.Name</h4>
-                        <p class="card-text">Prix: @produit.prix</p>
+                         style="width: 100%; height: 300px; object-fit: cover;">
+                        @if (produit.DateDepot.Date == DateTime.Today)
+                        {
+                            <div class="product-label">
+                                <span class="sale">-30%</span>
+                                <span class="new">NEW</span>
+                            </div>
+                        }
+           
+                    </div>
+                        <div class="product-body">
+                             <span>Category : @produit.Categories.CategorieName</span>
+                            <h3 class="product-name">@produit.Name</h3>
+                            <h4 class="product-price">Price: @produit.prix</h4>
+                            <div class="product-btns">
+                            <a asp-controller="Produits" asp-action="Details" asp-route-id="@produit.IdPr">
+                                <i class="fa fa-eye"></i>
+                                <span class="tooltipp">quick view</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="add-to-cart">
+                        <form method="post" asp-controller="Paniers" asp-action="AjouterAuPanier">
+                            <input type="hidden" name="idProduit" value="@produit.IdPr" />
+                            <button type="submit" class="add-to-cart-btn">
+                                <i class="fa fa-shopping-cart"></i> add to cart
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
+          
+           
         }
     </div>
-
+   
 
     <div class="store-filter clearfix">
 
@@ -284,7 +310,6 @@
             });
         });
     </script>
-
 
 
 

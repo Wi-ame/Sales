@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IDU)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IDPro)
             </th>
             <th>
@@ -30,9 +27,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IDU)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IDPro)
             </td>
@@ -51,3 +45,6 @@
 }
     </tbody>
 </table>
+<div>
+    <a asp-action="Authent" asp-controller="Utilisateurs" class="btn btn-primary">Commander</a>
+</div>

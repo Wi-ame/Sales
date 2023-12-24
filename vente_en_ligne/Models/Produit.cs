@@ -49,6 +49,11 @@ namespace vente_en_ligne.Models
         public Produit()
         {
             CategoriesList = new List<SelectListItem>();
+            // Initialisez DateDepot uniquement si elle n'est pas déjà définie
+            if (DateDepot == default(DateTime))
+            {
+                DateDepot = DateTime.Now;
+            }
         }
 
     }

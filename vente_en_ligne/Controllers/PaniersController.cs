@@ -44,6 +44,45 @@ namespace vente_en_ligne.Controllers
 
             return View(panier);
         }
+    
+            [HttpPost]
+            public IActionResult AjouterAuPanier(int idProduit)
+            {
+                var produit = _context.Produits.Find(idProduit);
+
+                if (produit == null)
+                {
+                    return NotFound();
+                }
+
+                // Vérifiez si le produit est déjà dans le panier
+                var panierItem = _context.Paniers.FirstOrDefault(item => item.IDPro == idProduit);
+
+                if (panierItem != null)
+                {
+                    // Le produit est déjà dans le panier, mettez à jour la quantité
+                    panierItem.Quantité++;
+                    panierItem.Total = panierItem.Quantité * produit.prix;
+                }
+                else
+                {
+                    // Le produit n'est pas dans le panier, ajoutez-le
+                    var nouveauPanierItem = new Panier
+                    {
+                        IDPro = idProduit,
+                        Quantité = 1,
+                        Total = produit.prix
+                    };
+
+                    _context.Add(nouveauPanierItem);
+
+                }
+
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Paniers");
+            }
+        
+
 
         // GET: Paniers/Create
         public IActionResult Create()
@@ -56,7 +95,7 @@ namespace vente_en_ligne.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IDU,IDPro,Quantité,Total")] Panier panier)
+        public async Task<IActionResult> Create([Bind("Id,IDPro,Quantité,Total")] Panier panier)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +127,7 @@ namespace vente_en_ligne.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IDU,IDPro,Quantité,Total")] Panier panier)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IDPro,Quantité,Total")] Panier panier)
         {
             if (id != panier.Id)
             {
